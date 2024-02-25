@@ -38,7 +38,7 @@ defusedxml==0.7.1
 dnspython==2.4.2
 email-validator==2.0.0.post2
 executing==2.0.1
-fastapi==0.103.1
+fastapi==0.109.1
 fastjsonschema==2.19.1
 Flask==3.0.0
 Flask-RESTful==0.3.10
