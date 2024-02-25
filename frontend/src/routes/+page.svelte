@@ -110,6 +110,9 @@
     </style>
 </head>
 <body>
+<div id = "container">
+
+
 <div id="map"></div>
 <div id="coordinates">Latitude: <span id="lat"></span>, Longitude: <span id="lng"></span></div>
 <div>
@@ -120,6 +123,7 @@
 <div>
     <button onclick="sendDataToWolfram()">Submit</button>
 </div>
+    </div>
 
 <!-- Top coordinates box -->
 <div id="top-coordinates-box">
@@ -252,7 +256,7 @@ function drawTopLocations(topLocations) {
     topCoordinatesList.innerHTML = ''; // Clear previous list items
 
     // Loop through all top locations, consider all 10 for processing
-    for (var i = 0; i < Math.min(topLocations.length, 10); i++) {
+    for (var i = 0; i < Math.min(topLocations.length, 5); i++) {
         var location = topLocations[i];
         var index = location.index;
         var lat = window.pointCoordinates[index].lat;
