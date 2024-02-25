@@ -59,20 +59,55 @@
 			// Function to draw circle based on entered radius
 			function drawCircle() {
 				var miles = parseFloat(document.getElementById('radius').value);
-				var radius = miles * 1609.34; // Convert miles to meters
+				var radiusInMeters = miles * 1609.34; // Convert miles to meters
 
-				// Remove existing circle if present
+				// Remove existing circle and points if present
 				if (circle) {
 					map.removeLayer(circle);
 				}
+				// Clear existing points if any
+				if (window.points && window.points.length) {
+					window.points.forEach(function (point) {
+						map.removeLayer(point);
+					});
+				}
+				window.points = [];
 
 				// Add new circle
 				circle = L.circle(marker.getLatLng(), {
-					radius: radius,
+					radius: radiusInMeters,
 					opacity: 0.5,
 					fillColor: 'blue',
 					fillOpacity: 0.2
 				}).addTo(map);
+
+				// Calculate and add points within the circle
+				var totalPoints = 5;
+				var rings = Math.ceil(Math.sqrt(totalPoints)); // Estimate number of rings needed
+				var angleStep = 360 / rings; // Angle step for distribution
+				var radialIncrement = radiusInMeters / rings; // Radial increment for each ring
+
+				for (var ring = 0; ring < rings; ring++) {
+					var pointsInRing = ring === 0 ? 1 : Math.round(2 * Math.PI * ring); // Distribute more points in outer rings
+					for (var i = 0; i < pointsInRing; i++) {
+						var angle = i * (360 / pointsInRing); // Angle for the current point
+						var angleRad = angle * (Math.PI / 180); // Convert angle to radians
+
+						// Adjust radius for each ring to distribute points inside the circle
+						var adjustedRadius = radialIncrement * ring;
+
+						// Calculate point position
+						var pointLat = marker.getLatLng().lat + (adjustedRadius / 111111) * Math.cos(angleRad);
+						var pointLng =
+							marker.getLatLng().lng +
+							((adjustedRadius / 111111) * Math.sin(angleRad)) /
+								Math.cos((marker.getLatLng().lat * Math.PI) / 180);
+
+						// Add point to the map
+						var point = L.marker([pointLat, pointLng]).addTo(map);
+						window.points.push(point); // Store the point for potential future removal
+					}
+				}
 			}
 		</script>
 	</body>
