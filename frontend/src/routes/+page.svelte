@@ -25,8 +25,13 @@
 			<input type="number" id="radius" min="0" value="10" />
 			<button onclick="drawCircle()">Draw Circle</button>
 		</div>
+		<div>
+			<button onclick="sendDataToWolfram()">Submit to Wolfram</button>
+		</div>
 
 		<script>
+			window.pointCoordinates = [];
+
 			// Initialize Leaflet map centered on United States
 			var map = L.map('map').setView([39.8283, -98.5795], 4);
 
@@ -105,9 +110,33 @@
 
 						// Add point to the map
 						var point = L.marker([pointLat, pointLng]).addTo(map);
-						window.points.push(point); // Store the point for potential future removal
+						window.pointCoordinates.push({ lat: pointLat, lng: pointLng });
 					}
 				}
+			}
+			function sendDataToWolfram() {
+				var coordinates = window.pointCoordinates; // Get the stored coordinates
+
+				console.log('Point Coordinates:', coordinates);
+
+				// Specify the URL of your Flask backend endpoint
+				var flaskEndpoint = 'http://localhost:5000/submit-coordinates'; // Change this to your actual Flask endpoint URL
+
+				// Make the POST request to your Flask backend
+				fetch(flaskEndpoint, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({ coordinates: coordinates })
+				})
+					.then((response) => response.json()) // Assuming your Flask endpoint responds with JSON
+					.then((data) => {
+						console.log('Success:', data); // Handle success response
+					})
+					.catch((error) => {
+						console.error('Error:', error); // Handle errors
+					});
 			}
 		</script>
 	</body>
