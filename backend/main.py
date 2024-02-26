@@ -43,11 +43,11 @@ def get_result():
 
         # Get the top 3 numerical values
         numerical_values = [(index, value) for index, value in enumerate(results) if value is not None]
-        top_10_values = sorted(numerical_values, key=lambda x: x[1], reverse=True)[:10]
+        top_5_values = sorted(numerical_values, key=lambda x: x[1], reverse=True)[:10]
 
         # Construct a response object with top 3 values and indices
         response_data = {
-            'top_10_results': [{'index': index, 'value': value} for index, value in top_10_values]
+            'top_5_results': [{'index': index, 'value': value} for index, value in top_5_values]
         }
 
         response = jsonify(response_data)

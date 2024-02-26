@@ -73,7 +73,7 @@
         }
 
         label {
-            display: block;
+            display: flex;
             margin-top: 10px;
         }
 
