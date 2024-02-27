@@ -2,11 +2,7 @@ import openai
 import requests
 
 # Set your OpenAI API key
-openai.api_key = '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'
-
-#OUT OF USE TILL I GET MORE CREDITS :b
-
-
+openai.api_key = '' # Insert API Key Here
 
 # Function to retrieve solar insolation data from the Flask API
 def get_solar_insolation_data():
